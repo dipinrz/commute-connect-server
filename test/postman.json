@@ -1,0 +1,291 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-a1b2-c3d4e5f67890",
+    "name": "CommuteConnect API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for CommuteConnect ride-sharing application"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\",\n  \"workBuilding\": \"Technopark Nila Building\",\n  \"company\": \"Tech Corp\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"company\": \"New Company\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/users/profile",
+              "host": ["{{base_url}}"],
+              "path": ["users", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Rides",
+      "item": [
+        {
+          "name": "Create Ride",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trainNumber\": \"12345\",\n  \"departureStation\": \"Ernakulam\",\n  \"arrivalStation\": \"Technopark\",\n  \"departureTime\": \"2023-06-15T08:30:00Z\",\n  \"availableSeats\": 3\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/rides",
+              "host": ["{{base_url}}"],
+              "path": ["rides"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Available Rides",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/rides?workBuilding=Technopark+Nila+Building&limit=5",
+              "host": ["{{base_url}}"],
+              "path": ["rides"],
+              "query": [
+                {
+                  "key": "workBuilding",
+                  "value": "Technopark Nila Building"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Buildings",
+      "item": [
+        {
+          "name": "Get All Buildings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/buildings",
+              "host": ["{{base_url}}"],
+              "path": ["buildings"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Buildings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/buildings/search?q=technopark",
+              "host": ["{{base_url}}"],
+              "path": ["buildings", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "technopark"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello, are you still offering the ride tomorrow?\",\n  \"receiverId\": \"123e4567-e89b-12d3-a456-426614174000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/messages",
+              "host": ["{{base_url}}"],
+              "path": ["messages"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/messages/conversations",
+              "host": ["{{base_url}}"],
+              "path": ["messages", "conversations"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "pm.test(\"Status code is 200\", function () {",
+          "    pm.response.to.have.status(200);",
+          "});",
+          "",
+          "pm.test(\"Response time is less than 200ms\", function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(200);",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
