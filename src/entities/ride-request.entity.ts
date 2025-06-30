@@ -9,11 +9,12 @@ export enum RequestStatus {
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
   CANCELLED = 'cancelled',
+  COMPLETED = 'completed'
 }
 
 @Entity('ride_requests')
 export class RideRequest extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.rides)
+  @ManyToOne(() => User, (user) => user.rideRequests)
   @JoinColumn({ name: 'passenger_id' })
   passenger: User;
 
@@ -24,12 +25,27 @@ export class RideRequest extends BaseEntity {
   @Column({
     type: 'enum',
     enum: RequestStatus,
-    default: RequestStatus.PENDING,
+    default: RequestStatus.PENDING
   })
   status: RequestStatus;
 
+  @Column({ name: 'train_number', length: 50 })
+  trainNumber: string;
+
+  @Column({ name: 'arrival_time' })
+  arrivalTime: Date;
+
+  @Column({ name: 'from_station', length: 100 })
+  fromStation: string;
+
+  @Column({ name: 'to_location', length: 100 })
+  toLocation: string;
+
+  @Column({ name: 'max_wait_time', type: 'smallint' })
+  maxWaitTime: number; // in minutes
+
   @Column({ type: 'text', nullable: true })
-  message?: string;
+  notes?: string;
 
   @Column({ name: 'pickup_location', length: 255 })
   pickupLocation: string;
