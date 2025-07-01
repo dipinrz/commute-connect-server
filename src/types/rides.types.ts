@@ -17,6 +17,12 @@ export interface FindRidesParams {
   limit?: number;
 }
 
-export interface RideWithDriver extends Ride {
+export type RideWithDriver = Omit<Ride, 'driver'> & {
   driver: Omit<User, 'password'>;
+};
+
+export enum RideStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
 }

@@ -1,9 +1,6 @@
 import app from './app';
-import dotenv from 'dotenv';
 import { AppDataSource } from './config/database.config';
-
-// Load environment variables
-dotenv.config();
+import 'dotenv/config';
 
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -11,6 +8,13 @@ const HOST = process.env.HOST || '0.0.0.0';
 // Initialize database connection before starting server
 async function initializeServer() {
   try {
+    console.log("🔍 ENV DB Config:", {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD?.slice(0, 4) + '***',
+  db: process.env.DB_NAME,
+});
     await AppDataSource.initialize();
     console.log('Database connected successfully');
 

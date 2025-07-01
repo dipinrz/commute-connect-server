@@ -10,7 +10,7 @@ export class UsersController {
     this.usersService = new UsersService();
   }
 
-  getProfile = async (req: Request, res: Response) => {
+  getProfile = async (req: any, res: any) => {
     try {
       const profile = await this.usersService.getUserProfile(req.user.id);
       res.status(200).json({
@@ -22,7 +22,7 @@ export class UsersController {
     }
   };
 
-  updateProfile = async (req: Request, res: Response) => {
+  updateProfile = async (req: any, res: any) => {
     try {
       const updatedUser = await this.usersService.updateUser(req.user.id, req.body);
       res.status(200).json({
