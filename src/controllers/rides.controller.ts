@@ -51,6 +51,26 @@ export class RidesController {
     }
   };
 
+  getUserRides = async (req: any, res: any) => {
+    try {
+      const params: any = {
+        userId: req.user.id,
+        status: req.query.status as 'active' | 'completed' | 'cancelled' | undefined,
+        limit: req.query.limit
+          ? parseInt(req.query.limit as string)
+          : undefined,
+      };
+
+      const rides = await this.ridesService.findUserRides(params);
+      res.status(200).json({
+        success: true,
+        data: rides,
+      });
+    } catch (error) {
+      this.handleError(res, error);
+    }
+  };
+
   getRideDetails = async (req: any, res: any) => {
     try {
       const ride = await this.ridesService.findRideById(req.params.id);

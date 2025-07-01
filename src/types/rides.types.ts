@@ -8,6 +8,10 @@ export interface CreateRideData {
   arrivalStation: string;
   departureTime: Date;
   availableSeats: number;
+  routeDetails?: string | null;
+  additionalDetails?: string | null;
+  vehicleInformation: string;
+
   driver: User;
 }
 
@@ -21,8 +25,10 @@ export type RideWithDriver = Omit<Ride, 'driver'> & {
   driver: Omit<User, 'password'>;
 };
 
-export enum RideStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed',
-  CANCELLED = 'cancelled',
-}
+// export enum RideStatus {
+//   PENDING = 'pending',
+//   COMPLETED = 'completed',
+//   CANCELLED = 'cancelled',
+// export interface RideWithDriver extends Ride {
+//   driver: Omit<User, "password">;
+// }

@@ -4,6 +4,7 @@ import { BaseEntity } from './base.entity';
 import { Ride } from './ride.entity';
 import { Rating } from './rating.entity';
 import { Message } from './message.entity';
+import { RideRequest } from './ride-request.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -57,4 +58,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Message, (message) => message.receiver)
   receivedMessages: Message[];
+ @OneToMany(() => RideRequest, (request) => request.passenger)
+rideRequests: RideRequest[];
+
 }

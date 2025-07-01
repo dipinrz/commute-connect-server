@@ -53,6 +53,38 @@ export class RidesService {
     return await query.getMany() as RideWithDriver[];
   }
 
+
+  async findUserRides(params: any) {
+    const { userId, status, limit } = params;
+    
+    const query = this.rideRepository
+      .createQueryBuilder('ride')
+      .leftJoinAndSelect('ride.driver', 'driver')
+      .where('ride.driver_id = :userId', { userId })
+      .select([
+        'ride',
+        'driver.id',
+        'driver.name',
+        'driver.email',
+        'driver.workBuilding',
+        'driver.company',
+        'driver.avatar',
+        'driver.rating'
+      ]);
+
+    if (status) {
+      query.andWhere('ride.status = :status', { status });
+    }
+
+    if (limit) {
+      query.limit(limit);
+    }
+
+    query.orderBy('ride.departureTime', 'DESC');
+
+    return await query.getMany() as RideWithDriver[];
+  }
+
   async findRideById(id: string): Promise<Ride | null> {
     return await this.rideRepository.findOne({ 
       where: { id },

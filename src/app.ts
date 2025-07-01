@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.routes';
 import ridesRoutes from './routes/rides.routes';
 import usersRoutes from './routes/users.routes';
 import buildingsRoutes from './routes/buildings.routes';
+import rideRequestRouts from './routes/ride-request.routes'
 import messagesRoutes from './routes/messages.routes';
 
 import { notFoundHandler } from './middlewares/notFound.middleware';
@@ -48,6 +49,8 @@ app.use('/api/rides', ridesRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/buildings', buildingsRoutes);
 app.use('/api/messages', messagesRoutes);
+app.use('/api/ride-request', rideRequestRouts);
+
 
 // Error handling
 app.use(notFoundHandler);
