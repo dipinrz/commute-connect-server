@@ -20,7 +20,7 @@ export class BuildingsService {
   async createBuilding(buildingData: CreateBuildingData): Promise<Building> {
     const building = this.buildingRepository.create({
       ...buildingData,
-      location: buildingData.location 
+      location: buildingData.location
         ? `(${buildingData.location.lat},${buildingData.location.lng})`
         : undefined
     });
@@ -44,13 +44,14 @@ export class BuildingsService {
       this.userRepository.count({
         where: { workBuilding: building.name }
       }),
-      this.rideRepository.count({
-        where: { 
-          driver: { workBuilding: building.name },
-          status: 'pending'
-        }
-      })
+      this.rideRepository
+        .createQueryBuilder('ride')
+        .leftJoin('ride.driver', 'driver')
+        .where('ride.status = :status', { status: 'pending' })
+        .andWhere('driver.workBuilding = :buildingName', { buildingName: building.name })
+        .getCount()
     ]);
+
 
     return {
       ...building,
@@ -61,7 +62,7 @@ export class BuildingsService {
 
   async updateBuilding(id: string, updateData: UpdateBuildingData): Promise<Building | null> {
     const updatePayload: any = { ...updateData };
-    
+
     if (updateData.location) {
       updatePayload.location = `(${updateData.location.lat},${updateData.location.lng})`;
     }

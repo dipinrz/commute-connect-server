@@ -4,6 +4,7 @@ import { AppDataSource } from "../config/database.config";
 import { User } from "../entities/user.entity";
 import { Ride } from "../entities/ride.entity";
 import { UpdateUserData, UserProfile } from "../types/users.types";
+import { RideStatus } from "../types/rides.types";
 
 export class UsersService {
   private userRepository: Repository<User>;
@@ -24,16 +25,17 @@ export class UsersService {
       throw new Error('User not found');
     }
 
-    const [upcomingRides, pastRides]:any = await Promise.all([
-      this.rideRepository.find({
-        where: { driver: { id: userId }, status: 'pending' },
-        relations: ['driver']
-      }),
-      this.rideRepository.find({
-        where: { driver: { id: userId }, status: 'completed' },
-        relations: ['driver']
-      })
-    ]);
+    const [upcomingRides, pastRides]: [Ride[], Ride[]] = await Promise.all([
+  this.rideRepository.find({
+    where: { driver: { id: userId }, status: RideStatus.PENDING },
+    relations: ['driver']
+  }),
+  this.rideRepository.find({
+    where: { driver: { id: userId }, status: RideStatus.COMPLETED },
+    relations: ['driver']
+  })
+]);
+
 
     return {
       ...user,

@@ -7,11 +7,11 @@ import { User } from './user.entity';
 export class Rating extends BaseEntity {
   @ManyToOne(() => User, (user) => user.ratingsGiven)
   @JoinColumn({ name: 'rater_id' })
-  rater: User;
+  rater!: User;
 
   @ManyToOne(() => User, (user) => user.ratingsReceived)
   @JoinColumn({ name: 'rated_user_id' })
-  ratedUser: User;
+  ratedUser!: User;
 
   @Column({ type: 'float' })
   rating: number;
