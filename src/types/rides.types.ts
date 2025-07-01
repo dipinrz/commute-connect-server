@@ -25,10 +25,8 @@ export type RideWithDriver = Omit<Ride, 'driver'> & {
   driver: Omit<User, 'password'>;
 };
 
-// export enum RideStatus {
-//   PENDING = 'pending',
-//   COMPLETED = 'completed',
-//   CANCELLED = 'cancelled',
-// export interface RideWithDriver extends Ride {
-//   driver: Omit<User, "password">;
-// }
+export enum RideStatus {
+  PENDING = 'pending',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+}

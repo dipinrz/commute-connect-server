@@ -10,8 +10,9 @@ const router = (0, express_1.Router)();
 const ridesController = new rides_controller_1.RidesController();
 // Protected routes (require authentication)
 router.use(auth_middleware_1.authMiddleware);
-router.post('/', (0, validation_middleware_1.validate)(rides_validation_1.createRideSchema), ridesController.createRide);
-router.get('/', ridesController.getAvailableRides);
-router.get('/:id', ridesController.getRideDetails);
-router.patch('/:id/status', (0, validation_middleware_1.validate)(rides_validation_1.updateRideStatusSchema), ridesController.updateRideStatus);
+router.get("/my-rides", ridesController.getUserRides);
+router.post("/", (0, validation_middleware_1.validate)(rides_validation_1.createRideSchema), ridesController.createRide);
+router.get("/", ridesController.getAvailableRides);
+router.get("/:id", ridesController.getRideDetails);
+router.patch("/:id/status", (0, validation_middleware_1.validate)(rides_validation_1.updateRideStatusSchema), ridesController.updateRideStatus);
 exports.default = router;

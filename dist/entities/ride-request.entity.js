@@ -21,12 +21,13 @@ var RequestStatus;
     RequestStatus["ACCEPTED"] = "accepted";
     RequestStatus["REJECTED"] = "rejected";
     RequestStatus["CANCELLED"] = "cancelled";
+    RequestStatus["COMPLETED"] = "completed";
 })(RequestStatus || (exports.RequestStatus = RequestStatus = {}));
 let RideRequest = class RideRequest extends base_entity_1.BaseEntity {
 };
 exports.RideRequest = RideRequest;
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.rides),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.rideRequests),
     (0, typeorm_1.JoinColumn)({ name: 'passenger_id' }),
     __metadata("design:type", user_entity_1.User)
 ], RideRequest.prototype, "passenger", void 0);
@@ -39,14 +40,34 @@ __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: RequestStatus,
-        default: RequestStatus.PENDING,
+        default: RequestStatus.PENDING
     }),
     __metadata("design:type", String)
 ], RideRequest.prototype, "status", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ name: 'train_number', length: 50 }),
+    __metadata("design:type", String)
+], RideRequest.prototype, "trainNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'arrival_time' }),
+    __metadata("design:type", Date)
+], RideRequest.prototype, "arrivalTime", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'from_station', length: 100 }),
+    __metadata("design:type", String)
+], RideRequest.prototype, "fromStation", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'to_location', length: 100 }),
+    __metadata("design:type", String)
+], RideRequest.prototype, "toLocation", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ name: 'max_wait_time', type: 'smallint' }),
+    __metadata("design:type", Number)
+], RideRequest.prototype, "maxWaitTime", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'text', nullable: true }),
     __metadata("design:type", String)
-], RideRequest.prototype, "message", void 0);
+], RideRequest.prototype, "notes", void 0);
 __decorate([
     (0, typeorm_1.Column)({ name: 'pickup_location', length: 255 }),
     __metadata("design:type", String)

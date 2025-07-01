@@ -48,6 +48,25 @@ class RidesController {
                 this.handleError(res, error);
             }
         });
+        this.getUserRides = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const params = {
+                    userId: req.user.id,
+                    status: req.query.status,
+                    limit: req.query.limit
+                        ? parseInt(req.query.limit)
+                        : undefined,
+                };
+                const rides = yield this.ridesService.findUserRides(params);
+                res.status(200).json({
+                    success: true,
+                    data: rides,
+                });
+            }
+            catch (error) {
+                this.handleError(res, error);
+            }
+        });
         this.getRideDetails = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const ride = yield this.ridesService.findRideById(req.params.id);

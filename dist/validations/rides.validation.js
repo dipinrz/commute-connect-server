@@ -12,7 +12,10 @@ exports.createRideSchema = joi_1.default.object({
     arrivalStation: joi_1.default.string().required(),
     departureTime: joi_1.default.date().iso().required(),
     availableSeats: joi_1.default.number().integer().min(1).required(),
+    vehicleInformation: joi_1.default.string().required(),
+    routeDetails: joi_1.default.string(),
+    additionalDetails: joi_1.default.string(),
 });
 exports.updateRideStatusSchema = joi_1.default.object({
-    status: joi_1.default.string().valid('active', 'completed', 'cancelled').required(),
+    status: joi_1.default.string().valid("active", "completed", "cancelled").required(),
 });

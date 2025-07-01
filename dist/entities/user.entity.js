@@ -16,6 +16,7 @@ const base_entity_1 = require("./base.entity");
 const ride_entity_1 = require("./ride.entity");
 const rating_entity_1 = require("./rating.entity");
 const message_entity_1 = require("./message.entity");
+const ride_request_entity_1 = require("./ride-request.entity");
 let User = class User extends base_entity_1.BaseEntity {
 };
 exports.User = User;
@@ -79,6 +80,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => message_entity_1.Message, (message) => message.receiver),
     __metadata("design:type", Array)
 ], User.prototype, "receivedMessages", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => ride_request_entity_1.RideRequest, (request) => request.passenger),
+    __metadata("design:type", Array)
+], User.prototype, "rideRequests", void 0);
 exports.User = User = __decorate([
     (0, typeorm_1.Entity)('users')
 ], User);

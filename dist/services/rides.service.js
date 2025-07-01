@@ -52,6 +52,33 @@ class RidesService {
             return yield query.getMany();
         });
     }
+    findUserRides(params) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { userId, status, limit } = params;
+            const query = this.rideRepository
+                .createQueryBuilder('ride')
+                .leftJoinAndSelect('ride.driver', 'driver')
+                .where('ride.driver_id = :userId', { userId })
+                .select([
+                'ride',
+                'driver.id',
+                'driver.name',
+                'driver.email',
+                'driver.workBuilding',
+                'driver.company',
+                'driver.avatar',
+                'driver.rating'
+            ]);
+            if (status) {
+                query.andWhere('ride.status = :status', { status });
+            }
+            if (limit) {
+                query.limit(limit);
+            }
+            query.orderBy('ride.departureTime', 'DESC');
+            return yield query.getMany();
+        });
+    }
     findRideById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.rideRepository.findOne({
