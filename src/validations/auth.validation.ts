@@ -1,5 +1,5 @@
 // src/validations/auth.validation.ts
-import Joi from 'joi';
+import Joi from "joi";
 
 export const registerSchema = Joi.object({
   name: Joi.string().required().min(3).max(50),
@@ -7,6 +7,7 @@ export const registerSchema = Joi.object({
   password: Joi.string().required().min(8),
   workBuilding: Joi.string().required(),
   company: Joi.string().optional(),
+  designation: Joi.string().optional(),
 });
 
 export const loginSchema = Joi.object({

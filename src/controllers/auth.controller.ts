@@ -23,6 +23,8 @@ export class AuthController {
         data: { user: userWithoutPassword, token },
       });
     } catch (error) {
+      console.log(error);
+      
       this.handleError(res, error);
     }
   };

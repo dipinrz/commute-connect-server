@@ -18,29 +18,39 @@ export class UsersService {
   async getUserProfile(userId: string): Promise<UserProfile> {
     const user = await this.userRepository.findOne({
       where: { id: userId },
-      select: ['id', 'name', 'email', 'workBuilding', 'company', 'avatar', 'rating', 'isDriver', 'vehicleInfo']
+      select: [
+        "id",
+        "name",
+        "email",
+        "workBuilding",
+        "company",
+        "designation",
+        "avatar",
+        "rating",
+        "isDriver",
+        "vehicleInfo",
+      ],
     });
 
     if (!user) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     const [upcomingRides, pastRides]: [Ride[], Ride[]] = await Promise.all([
-  this.rideRepository.find({
-    where: { driver: { id: userId }, status: RideStatus.PENDING },
-    relations: ['driver']
-  }),
-  this.rideRepository.find({
-    where: { driver: { id: userId }, status: RideStatus.COMPLETED },
-    relations: ['driver']
-  })
-]);
-
+      this.rideRepository.find({
+        where: { driver: { id: userId }, status: RideStatus.PENDING },
+        relations: ["driver"],
+      }),
+      this.rideRepository.find({
+        where: { driver: { id: userId }, status: RideStatus.COMPLETED },
+        relations: ["driver"],
+      }),
+    ]);
 
     return {
       ...user,
       upcomingRides,
-      pastRides
+      pastRides,
     };
   }
 
@@ -48,11 +58,22 @@ export class UsersService {
     await this.userRepository.update(userId, updateData);
     const updatedUser = await this.userRepository.findOne({
       where: { id: userId },
-      select: ['id', 'name', 'email', 'workBuilding', 'company', 'avatar', 'rating', 'isDriver', 'vehicleInfo']
+      select: [
+        "id",
+        "name",
+        "email",
+        "workBuilding",
+        "designation",
+         "company",
+        "avatar",
+        "rating",
+        "isDriver",
+        "vehicleInfo",
+      ],
     });
 
     if (!updatedUser) {
-      throw new Error('User not found');
+      throw new Error("User not found");
     }
 
     return updatedUser;
@@ -61,7 +82,15 @@ export class UsersService {
   async getUsersByBuilding(building: string): Promise<User[]> {
     return await this.userRepository.find({
       where: { workBuilding: building },
-      select: ['id', 'name', 'email', 'workBuilding', 'company', 'avatar', 'rating']
+      select: [
+        "id",
+        "name",
+        "email",
+        "workBuilding",
+        "company",
+        "avatar",
+        "rating",
+      ],
     });
   }
 }
