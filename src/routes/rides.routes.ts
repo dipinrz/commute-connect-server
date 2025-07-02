@@ -7,6 +7,7 @@ import {
   createRideSchema,
   updateRideStatusSchema,
 } from "../validations/rides.validation";
+import { cancelRideRequest } from "../controllers/ride-request.controller";
 
 const router = Router();
 const ridesController = new RidesController();
@@ -23,5 +24,8 @@ router.patch(
   validate(updateRideStatusSchema),
   ridesController.updateRideStatus
 );
+
+router.patch("/:id/cancel", ridesController.cancelRideOffer);
+
 
 export default router;
