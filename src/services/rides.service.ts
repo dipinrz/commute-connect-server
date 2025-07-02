@@ -1,7 +1,7 @@
 // src/services/rides.service.ts
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/database.config";
-import { Ride } from "../entities/ride.entity";
+import { Ride, RideStatus } from "../entities/ride.entity";
 import { User } from "../entities/user.entity";
 import { CreateRideData, FindRidesParams, RideWithDriver } from "../types/rides.types";
 
@@ -96,4 +96,33 @@ export class RidesService {
     await this.rideRepository.update(id, { status });
     return this.findRideById(id);
   }
+
+
+  async cancelRideOffer(id: string, driverId: string): Promise<Ride> {
+    // Find the ride with driver relation
+    const ride = await this.rideRepository.findOne({
+      where: { id },
+      relations: ['driver'],
+    });
+
+    if (!ride) {
+      throw new Error('Ride offer not found');
+    }
+
+    if (ride.driver.id !== driverId) {
+      throw new Error('Only the driver can cancel this ride offer');
+    }
+
+    if (ride.status === 'cancelled') {
+      throw new Error('Ride offer is already cancelled');
+    }
+
+    // Update status to cancelled
+    ride.status = RideStatus.CANCELLED;
+    return this.rideRepository.save(ride);
+
+    // Alternative using your demo method:
+    // return this.updateRideStatus(id, 'cancelled');
+  }
+
 }

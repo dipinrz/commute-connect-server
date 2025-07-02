@@ -129,4 +129,28 @@ export class RidesController {
       error: message,
     });
   }
+
+  cancelRideOffer = async (req: any, res: any) => {
+  try {
+    const ride = await this.ridesService.cancelRideOffer(
+      req.params.id,
+      req.user.id
+    );
+
+    if (!ride) {
+      return res.status(404).json({
+        success: false,
+        error: "Ride not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: ride,
+    });
+  } catch (error) {
+    this.handleError(res, error);
+  }
+};
+
 }

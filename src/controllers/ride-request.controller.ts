@@ -4,25 +4,59 @@ import { RequestStatus } from '../entities/ride-request.entity';
 
 const rideRequestService = new RideRequestService();
 
-export const createRideRequest = async (req: any, res: any) => {
+// export const createRideRequest = async (req: any, res: any) => {
+//   try {
+//     const rideRequest = await rideRequestService.createRideRequest({
+//       passengerId: req.user.id,
+//       rideId: req.body.rideId,
+//       trainNumber: req.body.trainNumber,
+//       arrivalTime: new Date(req.body.arrivalTime),
+//       fromStation: req.body.fromStation,
+//       toLocation: req.body.toLocation,
+//       maxWaitTime: parseInt(req.body.maxWaitTime),
+//       notes: req.body.notes,
+//       pickupLocation: req.body.pickupLocation || req.body.fromStation,
+//       dropoffLocation: req.body.dropoffLocation || req.body.toLocation
+//     });
+//     res.status(201).json(rideRequest);
+//   } catch (error:any) {
+//     res.status(400).json({ message: error.message });
+//   }
+// };
+
+
+export const createRideRequest = async (req:any, res: Response) => {
   try {
+    const {
+      rideId,
+      trainNumber,
+      arrivalTime,
+      fromStation,
+      toLocation,
+      maxWaitTime,
+      pickupLocation,
+      dropoffLocation,
+      notes
+    } = req.body;
+
     const rideRequest = await rideRequestService.createRideRequest({
       passengerId: req.user.id,
-      rideId: req.body.rideId,
-      trainNumber: req.body.trainNumber,
-      arrivalTime: new Date(req.body.arrivalTime),
-      fromStation: req.body.fromStation,
-      toLocation: req.body.toLocation,
-      maxWaitTime: parseInt(req.body.maxWaitTime),
-      notes: req.body.notes,
-      pickupLocation: req.body.pickupLocation || req.body.fromStation,
-      dropoffLocation: req.body.dropoffLocation || req.body.toLocation
+      trainNumber,
+      arrivalTime: new Date(arrivalTime),
+      fromStation,
+      toLocation,
+      maxWaitTime: parseInt(maxWaitTime),
+      pickupLocation: pickupLocation || fromStation,
+      dropoffLocation: dropoffLocation || toLocation,
+      notes
     });
+
     res.status(201).json(rideRequest);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 export const getRideRequest = async (req: any, res: any) => {
   try {

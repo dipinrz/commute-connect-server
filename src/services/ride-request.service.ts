@@ -3,58 +3,35 @@ import { RideRequest } from '../entities/ride-request.entity';
 import { User } from '../entities/user.entity';
 import { Ride } from '../entities/ride.entity';
 import { RequestStatus } from '../entities/ride-request.entity';
+import { CreateRideRequestData } from '../types/ride-request.types';
 
 export class RideRequestService {
   private rideRequestRepository = AppDataSource.getRepository(RideRequest);
   private userRepository = AppDataSource.getRepository(User);
   private rideRepository = AppDataSource.getRepository(Ride);
 
-  async createRideRequest(data: {
-    passengerId: string;
-    rideId: string;
-    trainNumber: string;
-    arrivalTime: Date;
-    fromStation: string;
-    toLocation: string;
-    maxWaitTime: number;
-    notes?: string;
-    pickupLocation: string;
-    dropoffLocation: string;
-  }) {
-    const passenger = await this.userRepository.findOneBy({ id: data.passengerId });
-    if (!passenger) throw new Error('Passenger not found');
+  async createRideRequest(data: CreateRideRequestData) {
+  const passenger = await this.userRepository.findOneBy({ id: data.passengerId });
+  if (!passenger) throw new Error('Passenger not found');
 
-    const ride = await this.rideRepository.findOneBy({ id: data.rideId });
-    if (!ride) throw new Error('Ride not found');
+  const rideRequest = this.rideRequestRepository.create({
+    passenger,
+    trainNumber: data.trainNumber,
+    arrivalTime: data.arrivalTime,
+    fromStation: data.fromStation,
+    toLocation: data.toLocation,
+    maxWaitTime: data.maxWaitTime,
+    notes: data.notes,
+    pickupLocation: data.pickupLocation || data.fromStation,
+    dropoffLocation: data.dropoffLocation || data.toLocation,
+    status: RequestStatus.PENDING,
+    // ride: null // no ride linked yet
+  });
 
-    // Check if passenger is already requesting this ride
-    const existingRequest = await this.rideRequestRepository.findOne({
-      where: {
-        passenger: { id: data.passengerId },
-        ride: { id: data.rideId }
-      }
-    });
+  return await this.rideRequestRepository.save(rideRequest);
+}
 
-    if (existingRequest) {
-      throw new Error('You have already requested this ride');
-    }
 
-    const rideRequest = this.rideRequestRepository.create({
-      passenger,
-      ride,
-      trainNumber: data.trainNumber,
-      arrivalTime: data.arrivalTime,
-      fromStation: data.fromStation,
-      toLocation: data.toLocation,
-      maxWaitTime: data.maxWaitTime,
-      notes: data.notes,
-      pickupLocation: data.pickupLocation,
-      dropoffLocation: data.dropoffLocation,
-      status: RequestStatus.PENDING
-    });
-
-    return await this.rideRequestRepository.save(rideRequest);
-  }
 
   async getRideRequestById(id: string) {
     const rideRequest = await this.rideRequestRepository.findOne({
