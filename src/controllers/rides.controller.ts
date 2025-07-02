@@ -13,6 +13,8 @@ export class RidesController {
 
   createRide = async (req: any, res: any) => {
     try {
+      console.log("call hit ==========");
+      
       const user = req.user;
       const rideData: CreateRideData = {
         ...req.body,

@@ -8,8 +8,8 @@ export const createRideSchema = Joi.object({
   departureTime: Joi.date().iso().required(),
   availableSeats: Joi.number().integer().min(1).required(),
   vehicleInformation: Joi.string().required(),
-  routeDetails: Joi.string(),
-  additionalDetails: Joi.string(),
+  routeDetails: Joi.string().allow("").optional(),
+  additionalDetails: Joi.string().allow("").optional(),
 });
 
 export const updateRideStatusSchema = Joi.object({
