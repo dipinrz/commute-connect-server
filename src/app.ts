@@ -53,7 +53,7 @@ app.use('/api/buildings', buildingsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/ride-request', rideRequestRouts);
 app.use('/api/place', placeRoutes);
-app.use('/api/match-ride', MatchROutes);
+app.use('/api', MatchROutes);
 
 
 

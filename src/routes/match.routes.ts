@@ -1,12 +1,10 @@
 import { Router } from 'express';
-import { getMatchingRides } from '../controllers/match.controller';
+import { getMatchingRequests, getMatchingRides } from '../controllers/match.controller';
 
 const router = Router();
 
 // GET /api/match-rides?requestId=abc123
-router.get('/', getMatchingRides);
-// router.get('/', (req:any,res:any)=>{
-//   res.json({data:req.query})
-// });
 
+router.get('/match-rides', getMatchingRides);       // requestId → rides
+router.get('/match-requests', getMatchingRequests); // rideId → requests
 export default router;
