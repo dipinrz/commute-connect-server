@@ -11,10 +11,11 @@ import buildingsRoutes from './routes/buildings.routes';
 import rideRequestRouts from './routes/ride-request.routes'
 import messagesRoutes from './routes/messages.routes';
 import placeRoutes from './routes/place.routes'
-
+import MatchROutes from  './routes/match.routes'
 import { notFoundHandler } from './middlewares/notFound.middleware';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { AppDataSource } from './config/database.config';
+
 import 'dotenv/config';
 
 const app = express();
@@ -52,6 +53,8 @@ app.use('/api/buildings', buildingsRoutes);
 app.use('/api/messages', messagesRoutes);
 app.use('/api/ride-request', rideRequestRouts);
 app.use('/api/place', placeRoutes);
+app.use('/api/match-ride', MatchROutes);
+
 
 
 // Error handling
