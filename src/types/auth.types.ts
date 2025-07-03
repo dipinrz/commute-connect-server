@@ -12,6 +12,7 @@ export interface RegisterData {
   password: string;
   workBuilding: string;
   company?: string;
+  designation?:string
 }
 
 export interface AuthResponse {
