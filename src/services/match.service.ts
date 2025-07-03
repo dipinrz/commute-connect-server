@@ -111,4 +111,9 @@ export class MatchService {
   private calculateRequestScore(request: RideRequest, ride: Ride): number {
     return this.calculateMatchScore(request, ride); // Same logic reused
   }
+
+
+  
 }
+
+

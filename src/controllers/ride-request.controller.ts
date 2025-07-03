@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { RideRequestService } from '../services/ride-request.service';
-import { RequestStatus } from '../entities/ride-request.entity';
+import { Request, Response } from "express";
+import { RideRequestService } from "../services/ride-request.service";
+import { RequestStatus } from "../entities/ride-request.entity";
 
 const rideRequestService = new RideRequestService();
 
@@ -24,8 +24,7 @@ const rideRequestService = new RideRequestService();
 //   }
 // };
 
-
-export const createRideRequest = async (req:any, res: Response) => {
+export const createRideRequest = async (req: any, res: Response) => {
   try {
     const {
       rideId,
@@ -36,7 +35,7 @@ export const createRideRequest = async (req:any, res: Response) => {
       maxWaitTime,
       pickupLocation,
       dropoffLocation,
-      notes
+      notes,
     } = req.body;
 
     const rideRequest = await rideRequestService.createRideRequest({
@@ -48,7 +47,7 @@ export const createRideRequest = async (req:any, res: Response) => {
       maxWaitTime: parseInt(maxWaitTime),
       pickupLocation: pickupLocation || fromStation,
       dropoffLocation: dropoffLocation || toLocation,
-      notes
+      notes,
     });
 
     res.status(201).json(rideRequest);
@@ -57,19 +56,22 @@ export const createRideRequest = async (req:any, res: Response) => {
   }
 };
 
-
 export const getRideRequest = async (req: any, res: any) => {
   try {
-    const rideRequest = await rideRequestService.getRideRequestById(req.params.id);
-    
+    const rideRequest = await rideRequestService.getRideRequestById(
+      req.params.id
+    );
+
     // Verify the requesting user is either passenger or driver
-    if (rideRequest.passenger.id !== req.user.id && 
-        rideRequest.ride.driver.id !== req.user.id) {
-      return res.status(403).json({ message: 'Not authorized' });
+    if (
+      rideRequest.passenger.id !== req.user.id &&
+      rideRequest.ride.driver.id !== req.user.id
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
     res.json(rideRequest);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(404).json({ message: error.message });
   }
 };
@@ -82,16 +84,18 @@ export const updateRequestStatus = async (req: any, res: any) => {
       req.user.id
     );
     res.json(rideRequest);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
 
 export const getMyRideRequests = async (req: any, res: any) => {
   try {
-    const rideRequests = await rideRequestService.getPassengerRequests(req.user.id);
+    const rideRequests = await rideRequestService.getPassengerRequests(
+      req.user.id
+    );
     res.json(rideRequests);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
@@ -103,7 +107,7 @@ export const getRideRequestsForRide = async (req: any, res: any) => {
       req.user.id
     );
     res.json(rideRequests);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
 };
@@ -115,7 +119,27 @@ export const cancelRideRequest = async (req: any, res: any) => {
       req.user.id
     );
     res.json(rideRequest);
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const confirmRideMatch = async (req: any, res: Response) => {
+  const requestId = req.params.requestId;
+  const { rideId } = req.body;
+
+  console.log(requestId,rideId,req.body);
+  
+  const userId = req.user.id; // assuming auth middleware sets this
+
+  try {
+    const updated = await rideRequestService.confirmMatch(
+      requestId,
+      rideId,
+      userId
+    );
+    res.json(updated);
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
   }
 };
