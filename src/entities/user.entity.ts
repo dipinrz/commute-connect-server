@@ -5,6 +5,7 @@ import { Ride } from "./ride.entity";
 import { Rating } from "./rating.entity";
 import { Message } from "./message.entity";
 import { RideRequest } from "./ride-request.entity";
+import { CommunityPost } from "./community.entity";
 
 @Entity("users")
 export class User extends BaseEntity {
@@ -22,7 +23,7 @@ export class User extends BaseEntity {
 
   @Column({ length: 100, nullable: true })
   company?: string;
-  
+
   @Column({ length: 100, nullable: true })
   designation?: string;
 
@@ -57,6 +58,10 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Message, (message) => message.sender)
   sentMessages: Message[];
+
+  @OneToMany(() => CommunityPost, (post) => post.user)
+  communityPosts: CommunityPost[];
+
 
   @OneToMany(() => Message, (message) => message.receiver)
   receivedMessages: Message[];

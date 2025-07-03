@@ -31,6 +31,7 @@ import { Building } from '../entities/building.entity';
 
 import 'dotenv/config';
 import { Place } from '../entities/place.entity';
+import { CommunityPost } from '../entities/community.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
@@ -41,7 +42,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: process.env.NODE_ENV !== 'production',
   logging: process.env.NODE_ENV === 'development',
-  entities: [User, Ride, RideRequest, Rating, Message, Building,Place],
+  entities: [User, Ride, RideRequest, Rating, Message, Building,Place,CommunityPost],
   migrations: ['src/migrations/*.ts'],
   subscribers: [],
 });
