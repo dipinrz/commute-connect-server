@@ -14,7 +14,7 @@ export class RidesController {
   createRide = async (req: any, res: any) => {
     try {
       console.log("call hit ==========");
-      
+
       const user = req.user;
       const rideData: CreateRideData = {
         ...req.body,
@@ -57,7 +57,11 @@ export class RidesController {
     try {
       const params: any = {
         userId: req.user.id,
-        status: req.query.status as 'active' | 'completed' | 'cancelled' | undefined,
+        status: req.query.status as
+          | "active"
+          | "completed"
+          | "cancelled"
+          | undefined,
         limit: req.query.limit
           ? parseInt(req.query.limit as string)
           : undefined,
@@ -133,26 +137,42 @@ export class RidesController {
   }
 
   cancelRideOffer = async (req: any, res: any) => {
-  try {
-    const ride = await this.ridesService.cancelRideOffer(
-      req.params.id,
-      req.user.id
-    );
+    try {
+      const ride = await this.ridesService.cancelRideOffer(
+        req.params.id,
+        req.user.id
+      );
 
-    if (!ride) {
-      return res.status(404).json({
-        success: false,
-        error: "Ride not found",
+      if (!ride) {
+        return res.status(404).json({
+          success: false,
+          error: "Ride not found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: ride,
       });
+    } catch (error) {
+      this.handleError(res, error);
     }
+  };
 
-    res.status(200).json({
-      success: true,
-      data: ride,
-    });
-  } catch (error) {
-    this.handleError(res, error);
-  }
-};
+  confirmRideOfferMatch = async (req: any, res: Response) => {
+    try {
+      const { rideId } = req.params;
+      const { requestId } = req.body;
+      const userId = req.user.id; // driver ID
 
+      const result = await this.ridesService.confirmRideOffer(
+        rideId,
+        requestId,
+        userId
+      );
+      res.status(200).json(result);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  };
 }

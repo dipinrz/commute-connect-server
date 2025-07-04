@@ -24,8 +24,8 @@ router.patch(
   validate(updateRideStatusSchema),
   ridesController.updateRideStatus
 );
+router.post("/:rideId/confirm", ridesController.confirmRideOfferMatch);
 
 router.patch("/:id/cancel", ridesController.cancelRideOffer);
-
 
 export default router;

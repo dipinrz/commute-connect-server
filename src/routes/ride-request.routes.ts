@@ -6,6 +6,7 @@ import {
   getMyRideRequests,
   getRideRequestsForRide,
   cancelRideRequest,
+  confirmRideMatch,
 } from "../controllers/ride-request.controller";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { validate } from "../middlewares/validation.middleware";
@@ -26,7 +27,8 @@ router.patch(
 );
 router.get("/passenger/me", getMyRideRequests);
 router.get("/ride/:rideId", getRideRequestsForRide);
-router.patch("/:id/cancel", cancelRideRequest);
 
+router.patch("/:id/cancel", cancelRideRequest);
+router.post("/:requestId/confirm", confirmRideMatch);
 
 export default router;
